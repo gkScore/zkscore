@@ -20,8 +20,10 @@ contract ZkScore is Ownable{
     // user address to H(user.address, null)
     mapping(address => bytes32) public userIdentifiers;
     
+    // user address to the count of received reputation 
+    mapping(address => uint) public totalOf;
+
     // mapping(address => uint) public scores;
-    // mapping(address => uint) public totalOf;
 
     // hash root of all users reputation
     bytes32 public globalState;
@@ -45,11 +47,12 @@ contract ZkScore is Ownable{
     /**
     * @dev Conract cannot generate genesis state if user is already registered
     */
-    function firstResister(bytes32 zeroHash) external onlyNotRegister {
+    function firstResister() external onlyNotRegister {
         address addr = msg.sender;
-        bytes32 hash = keccak256(abi.encodePacked(addr));
-        userIdentifiers[addr] = hash;
-        userIdentityState[addr] = _efficientHash(zeroHash, hash);
+        bytes32 addrHash = keccak256(abi.encodePacked(addr));
+        bytes32 zeroHash = keccak256(abi.encodePacked("0", addr));
+        userIdentifiers[addr] = addrHash;
+        userIdentityState[addr] = _efficientHash(zeroHash, addrHash);
     }
 
     /**
@@ -59,7 +62,7 @@ contract ZkScore is Ownable{
         bytes32 reputation = _efficientHash(hashedScore, userIdentifiers[target]);
         userIdentityState[target] =  _efficientHash(userIdentityState[target], reputation);
         globalState = _efficientHash(globalState, reputation);
-
+        totalOf[target]++;
         //emit Reputation(reputation);
     }
 

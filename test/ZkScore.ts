@@ -17,11 +17,9 @@ describe("ZkScore contract", function () {
 
   it("check -> first Rgisteration", async () => {
     expect(await ZkScore.isRegistered(owner.getAddress())).to.equal(false);
-    let hexMessage = ethers.utils.toUtf8Bytes('0'+owner.getAddress());
-    let hashedMessage = ethers.utils.keccak256(hexMessage);
-    await ZkScore.firstResister(hashedMessage);
+    await ZkScore.firstResister();
     expect(await ZkScore.isRegistered(owner.getAddress())).to.equal(true);
-    await expect(ZkScore.firstResister(hashedMessage)).to.be.revertedWith("You already registered");
+    await expect(ZkScore.firstResister()).to.be.revertedWith("You already registered");
 
   });
 
@@ -32,9 +30,9 @@ describe("ZkScore contract", function () {
     let genesisScore = ethers.utils.toUtf8Bytes('0'+to);
     let hashedGenesis = ethers.utils.keccak256(genesisScore);
     await expect(ZkScore.addReputation(to, hashedGenesis)).to.be.revertedWith("Recipients has not registered yet");
-    await ZkScore.connect(addr2).firstResister(hashedGenesis);
-
-
+    await ZkScore.connect(addr2).firstResister();
+    expect(await ZkScore.totalOf(to)).to.equal(0);
+    
     const globalRoot = await ZkScore.globalState();
     const currentRoot = await ZkScore.userIdentityState(to);
     const addr2Identifier = await ZkScore.userIdentifiers(to);
@@ -44,6 +42,7 @@ describe("ZkScore contract", function () {
     let reputation = ethers.utils.toUtf8Bytes('5'+from);
     let hashedReputation = ethers.utils.keccak256(reputation);
     await ZkScore.connect(addr1).addReputation(to, hashedReputation);
+    expect(await ZkScore.totalOf(to)).to.equal(1);
 
     let tmp = hashedReputation.substring(2,)+addr2Identifier.substring(2,);
     const leaf = ethers.utils.keccak256("0x"+tmp)
