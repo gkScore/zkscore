@@ -14,10 +14,6 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 contract ZkScore is Ownable, ERC721Enumerable{
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
-    
-    // see https://github.com/enricobottazzi/ZK-SBT/blob/main/contracts/PrivateSoulMinter.sol
-    // This contract code enable non-transferable by overriding _beforeTokenTransfer() and prohibiting approve
-    // error Soulbound();
 
     // user address to hash root of current reputation
     mapping(address => bytes32) public userIdentityState;
@@ -93,7 +89,7 @@ contract ZkScore is Ownable, ERC721Enumerable{
     * @dev we also override this to prohibit approve func
     */    
     function approve(address to, uint256 tokenId) public override(IERC721, ERC721){
-        require(false, "Err: token is SOUL BOUND"); // better?? => revert Soulbound()
+        require(false, "Err: token is SOUL BOUND"); // better?? => revert CustomError()
         super.approve(to, tokenId);
     }
 
@@ -101,7 +97,7 @@ contract ZkScore is Ownable, ERC721Enumerable{
     * @dev Maybe custom error is better approch??
     */    
     function setApprovalForAll(address operator, bool approved) public override(IERC721, ERC721){
-        require(false, "Err: token is SOUL BOUND"); // better?? => revert Soulbound()
+        require(false, "Err: token is SOUL BOUND"); // better?? => revert CustomError()
         super.setApprovalForAll(operator, approved);
     }
 
@@ -123,12 +119,12 @@ contract ZkScore is Ownable, ERC721Enumerable{
     /**
     * @dev inline assembly is more efficient than abi.encodePacked()??
     */
-    function _efficientHash(bytes32 a, bytes32 b) private pure returns (bytes32 value)
+    function _efficientHash(bytes32 leftNode, bytes32 rightNode) private pure returns (bytes32 hashedValue)
     {
         assembly {
-            mstore(0x00, a)
-            mstore(0x20, b)
-            value := keccak256(0x00, 0x40)
+            mstore(0x00, leftNode)
+            mstore(0x20, rightNode)
+            hashedValue := keccak256(0x00, 0x40)
         }
     }
 }
