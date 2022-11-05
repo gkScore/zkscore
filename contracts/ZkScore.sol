@@ -67,6 +67,7 @@ contract ZkScore is Ownable, ERC721Enumerable{
         bytes32 addrHash = keccak256(abi.encodePacked(addr));
         userAddressHash[addr] = addrHash;
         userIdentityState[addr] = _efficientHash(zeroHash, addrHash);
+        safeMint(addr);
     }
 
     /**

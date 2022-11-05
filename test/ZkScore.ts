@@ -23,10 +23,18 @@ describe("ZkScore contract", function () {
   })
 
   it("check -> first Rgisteration", async () => {
-    expect(await ZkScore.isRegistered(owner.getAddress())).to.equal(false);
+    const user = await owner.getAddress();
+    expect(await ZkScore.isRegistered(user)).to.equal(false);
+    expect(await ZkScore.balanceOf(user)).to.equal(0);
     await ZkScore.firstResister();
-    expect(await ZkScore.isRegistered(owner.getAddress())).to.equal(true);
+    expect(await ZkScore.balanceOf(user)).to.equal(1);
+    expect(await ZkScore.isRegistered(user)).to.equal(true);
     await expect(ZkScore.firstResister()).to.be.revertedWith("You already registered");
+    const genesisHash = await ZkScore.userIdentityState(user);
+    const hashedZero = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('0'))
+    const hashedUserAddr = ethers.utils.keccak256(user);
+    const tmp = hashedZero.substring(2,)+hashedUserAddr.substring(2,);
+    expect(ethers.utils.keccak256("0x"+tmp)).to.equal(genesisHash);
   });
 
   it("check -> add reputation", async () => {
@@ -39,9 +47,8 @@ describe("ZkScore contract", function () {
     await ZkScore.connect(addr2).firstResister();
     await expect(ZkScore.connect(addr2).mint(to, hashedGenesis)).to.be.revertedWith("You cannot add reputation to yourself");
     // await expect(ZkScore.connect(addr2).test(to)).to.be.revertedWith("Msg.sender must be EOA");
-    expect(await ZkScore.balanceOf(to)).to.equal(0);
+    expect(await ZkScore.balanceOf(to)).to.equal(1);
     
-    //const globalRoot = await ZkScore.globalState();
     const currentRoot = await ZkScore.userIdentityState(to);
     const addr2Identifier = await ZkScore.userAddressHash(to);
     const addr2Hash = ethers.utils.keccak256(to);
@@ -50,7 +57,7 @@ describe("ZkScore contract", function () {
     let reputation = ethers.utils.toUtf8Bytes('5'+from);
     let hashedReputation = ethers.utils.keccak256(reputation);
     await ZkScore.connect(addr1).mint(to, hashedReputation);
-    expect(await ZkScore.balanceOf(to)).to.equal(1);
+    expect(await ZkScore.balanceOf(to)).to.equal(2);
 
     let tmp = hashedReputation.substring(2,)+addr2Identifier.substring(2,);
     const leaf = ethers.utils.keccak256("0x"+tmp)
@@ -75,8 +82,8 @@ describe("ZkScore contract", function () {
     let hashedReputation = ethers.utils.keccak256(reputation);
     await ZkScore.connect(addr1).mint(to, hashedReputation);
     
-    await expect(ZkScore.connect(addr2).transferFrom(to, from, 0)).to.be.rejectedWith("Err: token is SOUL BOUND");
-    await expect(ZkScore.connect(addr2).approve(from, 0)).to.be.rejectedWith("Err: token is SOUL BOUND");
+    await expect(ZkScore.connect(addr2).transferFrom(to, from, 1)).to.be.rejectedWith("Err: token is SOUL BOUND");
+    await expect(ZkScore.connect(addr2).approve(from, 1)).to.be.rejectedWith("Err: token is SOUL BOUND");
     await expect(ZkScore.connect(addr2).setApprovalForAll(from, false)).to.be.rejectedWith("Err: token is SOUL BOUND");
     await expect(ZkScore.connect(addr2)["safeTransferFrom(address,address,uint256)"](to, from, 0)).to.be.rejectedWith("Err: token is SOUL BOUND");
   });
