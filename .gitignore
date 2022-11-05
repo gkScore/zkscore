@@ -9,3 +9,6 @@ typechain-types
 cache
 artifacts
 
+# secret file such as private key
+secret.json
+
