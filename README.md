@@ -26,6 +26,9 @@
   - https://frontend-zkscore.vercel.app/
 
 ## Contractのテスト
+- zkSBT(スコアを表現したSBT)が対象アドレスに発行されていること
+- zkSBTは譲渡できないこと
+
 ```shell
 git clone git@github.com:gkScore/zkscore.git
 cd zkscore
