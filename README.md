@@ -8,7 +8,7 @@
     - CSS：tailwindcss
   - バックエンド
     - 言語：C#
-    - インフラ：Azure functions, cosmosdb
+    - インフラ：Azure functions, Azure SQL
   - スマートコントラクト
     - 言語：Solidity
     - 開発環境：Hardhat
