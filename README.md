@@ -24,7 +24,7 @@
 ![](image.png)
 
 - 審査やテストのためにプロジェクトにアクセスする方法など
-  - https://frontend-zkscore.vercel.app/
+  - https://frontend-zkscore.vercel.app/  
   -https://tokyoweb3zkscore.azurewebsites.net/
 
 ## Contractのテスト
