@@ -25,6 +25,7 @@
 
 - 審査やテストのためにプロジェクトにアクセスする方法など
   - https://frontend-zkscore.vercel.app/
+  -https://tokyoweb3zkscore.azurewebsites.net/
 
 ## Contractのテスト
 - zkSBT(スコアを表現したSBT)が対象アドレスに発行されていること
