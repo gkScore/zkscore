@@ -7,5 +7,9 @@ typechain-types
 
 #Hardhat files
 cache
-artifacts
+artifacts/*
+!artifacts/contracts
+
+# secret file such as private key
+secret.json
 
