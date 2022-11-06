@@ -11,6 +11,7 @@
     - インフラ：Azure functions, cosmosdb
   - スマートコントラクト
     - 言語：Solidity
+    - 開発環境：Hardhat
 
 - 使用したBlockchain：Ethereum (Goerli)
 - deployしたContract(ExplorerでOK)
