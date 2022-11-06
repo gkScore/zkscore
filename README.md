@@ -27,7 +27,7 @@
 
 ## Contractのテスト
 ```shell
-git clone 
+git clone git@github.com:gkScore/zkscore.git
 cd zkscore
 npm i
 REPORT_GAS=true npx hardhat test
