@@ -20,7 +20,7 @@
   - Please check this repository, [frontend](https://github.com/gkScore/frontend), [backend](https://github.com/gkScore/azfunc). 
 - テスト手順を含むリポジトリへのリンク
   - 以下画像
-![](static/image.png)
+![](image.png)
 
 - 審査やテストのためにプロジェクトにアクセスする方法など
   - https://frontend-zkscore.vercel.app/
