@@ -17,7 +17,7 @@
   - [link](https://goerli.etherscan.io/address/0x774D1ceB846730A2226E4BdC0f47E11a98f2Db8A)
   - Address：0x774D1ceB846730A2226E4BdC0f47E11a98f2Db8A
 - application codeやその他のfile
-  - Please check this repository, frontend, backend. 
+  - Please check this repository, [frontend](https://github.com/gkScore/frontend), [backend](https://github.com/gkScore/azfunc). 
 - テスト手順を含むリポジトリへのリンク
   - 以下画像
 ![](static/image.png)
